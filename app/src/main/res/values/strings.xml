@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Netfilms</string>
+    <string name="title_activity_qrcode">QRCodeActivity</string>
+    <string name="most_popular_movies">Films les plus populaires</string>
+    <string name="error_fetch_movies">Vérifiez votre connexion internet</string>
+    <string name="top_rated">Mieux notés</string>
+    <string name="highest_rated_movies">Les films les mieux notés du site</string>
+</resources>

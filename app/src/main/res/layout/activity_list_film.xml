@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListFilmActivity"
+    android:background="@color/dark_grey"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Search"
+        android:textColor="@color/light_grey"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/search_film_list_film_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_grey"/>
+
+    <Button
+        android:id="@+id/search_films_list_film_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textColor="@color/light_grey"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_pagination_list_film_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/first_page_list_film_imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/baseline_keyboard_double_arrow_left_24" />
+
+                <ImageButton
+                    android:id="@+id/previous_page_list_film_imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/baseline_chevron_left_24" />
+
+                <TextView
+                    android:id="@+id/page_list_film_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1-20 of 20"
+                    android:textColor="@color/light_grey"/>
+
+                <EditText
+                    android:id="@+id/page_list_film_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:imeOptions="actionDone"
+                    android:text="1"
+                    android:textColor="@color/light_grey"/>
+
+                <ImageButton
+                    android:id="@+id/next_page_list_film_imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/baseline_chevron_right_24" />
+
+                <ImageButton
+                    android:id="@+id/last_page_list_film_imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/baseline_keyboard_double_arrow_right_24" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_film_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light_grey"/>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+</LinearLayout>

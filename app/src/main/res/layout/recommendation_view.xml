@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/movie_name_recommendation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:textStyle="bold"
+        android:text="title"
+        android:textColor="@color/light_grey"/>
+
+    <com.jackandphantom.carouselrecyclerview.view.ReflectionImageView
+        android:id="@+id/poster_image_image_view"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
