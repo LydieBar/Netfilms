@@ -7,6 +7,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+//On récupère les films poulaires et mieux notés
 object MoviesRepository {
 
     private val api: Api

@@ -3,15 +3,21 @@ package fr.epf.min1.android_project.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.camera.core.ExperimentalGetImage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import fr.epf.min1.android_project.ListFilmActivity
+import fr.epf.min1.android_project.QRCodeActivity
 import fr.epf.min1.android_project.R
 
+//Details des films de la page d'accueil
 
 const val MOVIE_BACKDROP = "extra_movie_backdrop"
 const val MOVIE_POSTER = "extra_movie_poster"
@@ -109,6 +115,39 @@ class MovieDetailsActivity : AppCompatActivity() {
         intent.putExtra("remove_favorite", true)
         intent.putExtra("is_favorite", false)
         startActivity(intent)
+    }
+
+    //Menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.home_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    @ExperimentalGetImage
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.home -> {
+                Toast.makeText(this,"Accueil",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyMainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.search_movie -> {
+                Toast.makeText(this,"Recherche",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ListFilmActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.fav_movies -> {
+                Toast.makeText(this,"Favoris",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MoviesFavoriteActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_scan_qr_code -> {
+                Toast.makeText(this,"Scanner un QRCode",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, QRCodeActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

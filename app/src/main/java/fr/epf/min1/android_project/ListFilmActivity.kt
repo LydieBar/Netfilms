@@ -24,10 +24,17 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.min1.android_project.api.ApiTMDb
+import fr.epf.min1.android_project.home.MoviesFavoriteActivity
+import fr.epf.min1.android_project.home.MyMainActivity
+import fr.epf.min1.android_project.home.PAGE_FAVORITES
+import fr.epf.min1.android_project.home.PAGE_MAIN
+import fr.epf.min1.android_project.home.PAGE_QR_CODE
+import fr.epf.min1.android_project.home.PAGE_SEARCH
 import fr.epf.min1.android_project.model.Film
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 
+val currentPage = PAGE_SEARCH
 class ListFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
@@ -97,14 +104,63 @@ class ListFilmActivity : AppCompatActivity() {
     }
 
     //MENU
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.list_film_menu,menu)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.home_menu,menu)
+        updateMenuItems(menu);
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun updateMenuItems(menu: Menu) {
+        val homeItem = menu.findItem(R.id.home)
+        val searchItem = menu.findItem(R.id.search_movie)
+        val favItem = menu.findItem(R.id.fav_movies)
+        val qrCodeItem = menu.findItem(R.id.action_scan_qr_code)
+        when (currentPage) {
+
+            PAGE_MAIN -> {
+                homeItem.isVisible = false
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_SEARCH -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = false
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_FAVORITES -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = false
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_QR_CODE -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = false
+            }
+        }
     }
     @ExperimentalGetImage
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId){
+            R.id.home -> {
+                Toast.makeText(this,"Accueil",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyMainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.fav_movies -> {
+                Toast.makeText(this,"Favoris",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MoviesFavoriteActivity::class.java)
+                startActivity(intent)
+            }
             R.id.action_scan_qr_code -> {
+                Toast.makeText(this,"Scanner un QRCode",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, QRCodeActivity::class.java)
                 startActivity(intent)
             }
@@ -113,7 +169,6 @@ class ListFilmActivity : AppCompatActivity() {
     }
 
 
-    // Custom class to define min and max for the pagination edit text
     inner class MinMaxFilter() : InputFilter {
         private var intMin: Int = 0
         private var intMax: Int = 0
@@ -137,9 +192,6 @@ class ListFilmActivity : AppCompatActivity() {
             }
             return ""
         }
-
-        // Check if input c is in between min a and max b and
-        // returns corresponding boolean
         private fun isInRange(a: Int, b: Int, c: Int): Boolean {
             return if (b > a) c in a..b else c in b..a
         }

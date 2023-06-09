@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/Accent_red">
+
+    <item
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/baseline_more_vert_24"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/home"
+                android:icon="@drawable/baseline_home_24"
+                android:title="Accueil"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/search_movie"
+                android:icon="@drawable/baseline_search_24"
+                android:title="Recherche"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/fav_movies"
+                android:icon="@drawable/baseline_favorite_24"
+                android:title="Favoris"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_scan_qr_code"
+                android:icon="@drawable/baseline_qr_code_scanner_24"
+                android:title="QRCode"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+</menu>

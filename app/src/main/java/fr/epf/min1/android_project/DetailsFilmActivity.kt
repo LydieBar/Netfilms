@@ -1,5 +1,6 @@
 package fr.epf.min1.android_project
 
+import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import android.view.Menu
@@ -8,11 +9,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ExperimentalGetImage
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import fr.epf.min1.android_project.api.ApiTMDb
 import fr.epf.min1.android_project.api.AppConstants
 import fr.epf.min1.android_project.databinding.ActivityDetailsFilmBinding
+import fr.epf.min1.android_project.home.MoviesFavoriteActivity
+import fr.epf.min1.android_project.home.MyMainActivity
+import fr.epf.min1.android_project.home.PAGE_FAVORITES
+import fr.epf.min1.android_project.home.PAGE_MAIN
+import fr.epf.min1.android_project.home.PAGE_QR_CODE
+import fr.epf.min1.android_project.home.PAGE_SEARCH
+import fr.epf.min1.android_project.home.currentPage
 import fr.epf.min1.android_project.model.Collection
 import fr.epf.min1.android_project.model.Film
 import fr.epf.min1.android_project.model.Genre
@@ -48,40 +57,33 @@ class DetailsFilmActivity : AppCompatActivity() {
         }
     }
 
+override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.home_menu,menu)
+    return super.onCreateOptionsMenu(menu)
+}
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.details_film_menu,menu)
-        if (menu != null) {
-            this.menu = menu
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
+    @ExperimentalGetImage
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_add_delete_from_favorite -> {
-                val db = DBHelper(this, null)
-                var movieId:Int = findViewById<TextView>(R.id.id_table_textView).text.toString().toInt()
-                movieId = 10
-                if (isInDB(movieId, db)){
-                    menu.findItem(item.itemId).icon = ContextCompat.getDrawable(this, R.drawable.baseline_star_border_24)
-
-                    db.deleteFavoriteByMovieId(movieId)
-
-                    Toast.makeText(this," Movie deleted from favorites", Toast.LENGTH_SHORT).show()
-                }else{
-                    menu.findItem(item.itemId).icon = ContextCompat.getDrawable(this, R.drawable.baseline_star_24)
-
-                    val title = findViewById<TextView>(R.id.title_table_textView).text.toString()
-                    val rating = findViewById<TextView>(R.id.popularity_table_textView).text.toString().toFloat()
-                    val posterPath = findViewById<TextView>(R.id.poster_path_table_textView).text.toString()
-
-                    db.addFilm(movieId, "title", 1.1, "posterPath")
-
-                    Toast.makeText(this," Movie added to favorites", Toast.LENGTH_SHORT).show()
-                }
-
-
-
+        when (item.itemId){
+            R.id.home -> {
+                Toast.makeText(this,"Accueil",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyMainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.search_movie -> {
+                Toast.makeText(this,"Recherche",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ListFilmActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.fav_movies -> {
+                Toast.makeText(this,"Favoris",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MoviesFavoriteActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_scan_qr_code -> {
+                Toast.makeText(this,"Scanner un QRCode",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, QRCodeActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -152,8 +154,6 @@ class DetailsFilmActivity : AppCompatActivity() {
 //                    filmRes.vote_count)
 
 
-            //TODO create all widgets in layout/activity_details_film.xml
-            //TODO create recycler view for genre, countries, companies, languages (horizontal)
             val titleTextView = findViewById<TextView>(R.id.movie_title_details_textView)
             titleTextView.text = filmRes.title
 

@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -22,11 +24,17 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import fr.epf.min1.android_project.databinding.PreviewViewBinding
+import fr.epf.min1.android_project.home.MoviesFavoriteActivity
+import fr.epf.min1.android_project.home.MyMainActivity
+import fr.epf.min1.android_project.home.PAGE_FAVORITES
+import fr.epf.min1.android_project.home.PAGE_MAIN
+import fr.epf.min1.android_project.home.PAGE_QR_CODE
+import fr.epf.min1.android_project.home.PAGE_SEARCH
 import java.util.concurrent.Executors
 
 
 private const val CAMERA_PERMISSION_REQUEST_CODE = 1
-
+val Page = PAGE_QR_CODE
 @ExperimentalGetImage
 class QRCodeActivity : AppCompatActivity() {
 
@@ -41,7 +49,6 @@ class QRCodeActivity : AppCompatActivity() {
         else requestPermission()
     }
 
-    // checking to see whether user has already granted permission
     private fun hasCameraPermission() =
         ActivityCompat.checkSelfPermission(
             this,
@@ -49,7 +56,6 @@ class QRCodeActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermission(){
-        // opening up dialog to ask for camera permission
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.CAMERA),
@@ -64,10 +70,8 @@ class QRCodeActivity : AppCompatActivity() {
     ) {
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE
             && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // user granted permissions - we can set up our scanner
             bindCameraUseCases()
         } else {
-            // user did not grant permissions - we can't use the camera
             Toast.makeText(this,
                 "Camera permission required",
                 Toast.LENGTH_LONG
@@ -83,18 +87,12 @@ class QRCodeActivity : AppCompatActivity() {
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
-            // setting up the preview use case
             val previewUseCase = Preview.Builder()
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.cameraView.surfaceProvider)
                 }
 
-            // configure our MLKit BarcodeScanning client
-
-            /* passing in our desired barcode formats - MLKit supports additional formats outside of the
-            ones listed here, and you may not need to offer support for all of these. You should only
-            specify the ones you need */
             val options = BarcodeScannerOptions.Builder().setBarcodeFormats(
                 Barcode.FORMAT_CODE_128,
                 Barcode.FORMAT_CODE_39,
@@ -107,21 +105,17 @@ class QRCodeActivity : AppCompatActivity() {
                 Barcode.FORMAT_PDF417
             ).build()
 
-            // getClient() creates a new instance of the MLKit barcode scanner with the specified options
             val scanner = BarcodeScanning.getClient(options)
 
-            // setting up the analysis use case
             val analysisUseCase = ImageAnalysis.Builder()
                 .build()
 
-            // define the actual functionality of our analysis use case
             analysisUseCase.setAnalyzer(
                 Executors.newSingleThreadExecutor()
             ) { imageProxy ->
                 processImageProxy(scanner, imageProxy)
             }
 
-            // configure to use the back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
@@ -131,10 +125,8 @@ class QRCodeActivity : AppCompatActivity() {
                     previewUseCase,
                     analysisUseCase)
             } catch (illegalStateException: IllegalStateException) {
-                // If the use case has already been bound to another lifecycle or method is not called on main thread.
                 Log.e(TAG, illegalStateException.message.orEmpty())
             } catch (illegalArgumentException: IllegalArgumentException) {
-                // If the provided camera selector is unable to resolve a camera to be used for the given use cases.
                 Log.e(TAG, illegalArgumentException.message.orEmpty())
             }
         }, ContextCompat.getMainExecutor(this))
@@ -156,7 +148,6 @@ class QRCodeActivity : AppCompatActivity() {
                 .addOnSuccessListener { barcodeList ->
                     val barcode = barcodeList.getOrNull(0)
 
-                    // `rawValue` is the decoded value of the barcode
                     barcode?.rawValue?.let { value ->
                         val intent = Intent(this, DetailsFilmActivity::class.java)
                         Toast.makeText(this@QRCodeActivity, value, Toast.LENGTH_SHORT).show()
@@ -165,15 +156,10 @@ class QRCodeActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener {
-                    // This failure will happen if the barcode scanning model
-                    // fails to download from Google Play Services
+
 
                     Log.e(TAG, it.message.orEmpty())
                 }.addOnCompleteListener {
-                    // When the image is from CameraX analysis use case, must
-                    // call image.close() on received images when finished
-                    // using them. Otherwise, new images may not be received
-                    // or the camera may stall.
 
                     imageProxy.image?.close()
                     imageProxy.close()
@@ -183,5 +169,69 @@ class QRCodeActivity : AppCompatActivity() {
 
     companion object {
         val TAG: String = "EPF"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.home_menu,menu)
+        updateMenuItems(menu);
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun updateMenuItems(menu: Menu) {
+        val homeItem = menu.findItem(R.id.home)
+        val searchItem = menu.findItem(R.id.search_movie)
+        val favItem = menu.findItem(R.id.fav_movies)
+        val qrCodeItem = menu.findItem(R.id.action_scan_qr_code)
+        when (Page) {
+
+            PAGE_MAIN -> {
+                homeItem.isVisible = false
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_SEARCH -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = false
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_FAVORITES -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = false
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_QR_CODE -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = false
+            }
+        }
+    }
+    @ExperimentalGetImage
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.home -> {
+                Toast.makeText(this,"Accueil",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyMainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.search_movie -> {
+                Toast.makeText(this,"Recherche",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ListFilmActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.fav_movies -> {
+                Toast.makeText(this,"Favoris",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MoviesFavoriteActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

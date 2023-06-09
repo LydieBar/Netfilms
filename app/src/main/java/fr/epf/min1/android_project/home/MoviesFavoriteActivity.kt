@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -11,15 +13,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.camera.core.ExperimentalGetImage
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.google.gson.Gson
+import fr.epf.min1.android_project.ListFilmActivity
 import fr.epf.min1.android_project.QRCodeActivity
 import fr.epf.min1.android_project.R
 
+val Page = PAGE_FAVORITES
 class MoviesFavoriteActivity : AppCompatActivity() {
     private lateinit var linearLayout: LinearLayout
     private lateinit var favoriteMoviesManager: FavoriteMoviesManager
@@ -79,6 +84,71 @@ class MoviesFavoriteActivity : AppCompatActivity() {
         return movieLayout
     }
 
+    //menu dynamique
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.home_menu,menu)
+        updateMenuItems(menu);
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    //pour que l'on affiche dans le menu que les pages qui nous intéressent
+    private fun updateMenuItems(menu: Menu) {
+        val homeItem = menu.findItem(R.id.home)
+        val searchItem = menu.findItem(R.id.search_movie)
+        val favItem = menu.findItem(R.id.fav_movies)
+        val qrCodeItem = menu.findItem(R.id.action_scan_qr_code)
+        when (Page) {
+
+            PAGE_MAIN -> {
+                homeItem.isVisible = false
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_SEARCH -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = false
+                favItem.isVisible = true
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_FAVORITES -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = false
+                qrCodeItem.isVisible = true
+            }
+
+            PAGE_QR_CODE -> {
+                homeItem.isVisible = true
+                searchItem.isVisible = true
+                favItem.isVisible = true
+                qrCodeItem.isVisible = false
+            }
+        }
+    }
+    @ExperimentalGetImage
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.home -> {
+                Toast.makeText(this,"Accueil", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyMainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.search_movie -> {
+                Toast.makeText(this,"Recherche", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ListFilmActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_scan_qr_code -> {
+                Toast.makeText(this,"Scanner un QRCode", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, QRCodeActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 
 }

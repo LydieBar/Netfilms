@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 
+//code pour mettre en favori
 class FavoriteMoviesManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("FavoriteMovies", Context.MODE_PRIVATE)
     private val favoriteMoviesKey = "favorite_movies"
