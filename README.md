@@ -13,6 +13,7 @@ _Fait_
 
 * Scanner un QRCode  
 _Fait mais sur téléphone simulé, vérification incomplète de cette feature_
+![alt text](./ressources/QRCode_Id_movie.png)
 
 * Mettre en favoris certains films  
 _Fait_
