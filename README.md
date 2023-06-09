@@ -12,7 +12,7 @@ _Fait_
 _Fait_
 
 * Scanner un QRCode  
-_Fait_ mais sur téléphone simulé, vérification incomplète de cette feature
+_Fait mais sur téléphone simulé, vérification incomplète de cette feature_
 
 * Mettre en favoris certains films  
 _Fait_
