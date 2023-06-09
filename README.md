@@ -1,19 +1,21 @@
-# projet_android_kotlin
+# projet_android_kotlin  
 
-##  Recherche un film via une chaine de caractères  
-Fait
+##  Conditions
 
-##  Afficher la fiche d'un film  
-Fait
+* Recherche un film via une chaine de caractères  
+_Fait_
 
-##  Afficher la liste des films recommandés par rapport au film sélectionné  
-Fait
+* Afficher la fiche d'un film  
+_Fait_
 
-##  Scanner un QRCode  
-Fait mais sur téléphone simulé, vérification incomplète de cette feature
+* Afficher la liste des films recommandés par rapport au film sélectionné  
+_Fait_
 
-##  Mettre en favoris certains films  
-Fait
+* Scanner un QRCode  
+_Fait_ mais sur téléphone simulé, vérification incomplète de cette feature
+
+* Mettre en favoris certains films  
+_Fait_
 
 ##  Elements ajoutés  
 * Page d'accueil avec films populaires et films les mieux notés
