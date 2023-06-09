@@ -13,6 +13,13 @@ _Fait_
 
 * Scanner un QRCode  
 _Fait mais sur téléphone simulé, vérification incomplète de cette feature_
+
+#### exemple
+
+<ins>id</ins>:420808 
+
+<ins>Title</ins>:Peter Pan & Wendy 
+
 ![alt text](./ressources/QRCode_Id_movie.png)
 
 * Mettre en favoris certains films  
