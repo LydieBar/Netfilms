@@ -17,7 +17,7 @@ _Fait mais sur téléphone simulé, vérification incomplète de cette feature_
 * Mettre en favoris certains films  
 _Fait_
 
-##  Elements ajoutés  
+##  Eléments ajoutés  
 * Page d'accueil avec films populaires et films les mieux notés
 * Menu dynamique pour naviguer entre les pages
 * Carrousel pour afficher les film recommandés
