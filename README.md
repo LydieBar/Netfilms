@@ -20,4 +20,4 @@ _Fait_
 ##  Eléments ajoutés  
 * Page d'accueil avec films populaires et films les mieux notés
 * Menu dynamique pour naviguer entre les pages
-* Carrousel pour afficher les film recommandés
+* Carrousel pour afficher les films recommandés
