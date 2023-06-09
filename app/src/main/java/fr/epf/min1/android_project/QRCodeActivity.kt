@@ -151,7 +151,7 @@ class QRCodeActivity : AppCompatActivity() {
                     barcode?.rawValue?.let { value ->
                         val intent = Intent(this, DetailsFilmActivity::class.java)
                         Toast.makeText(this@QRCodeActivity, value, Toast.LENGTH_SHORT).show()
-                        intent.putExtra("film_id", value)
+                        intent.putExtra("film_id", value.toInt())
                         startActivity(intent)
                     }
                 }
